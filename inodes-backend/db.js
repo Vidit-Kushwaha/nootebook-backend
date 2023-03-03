@@ -1,8 +1,14 @@
 const mongoose = require('mongoose');
-const mongoURI = "mongodb://localhost27017/?&directConnection=true&ssl=false"
-const connectToMongo = () => {
-    mongoose.connect(mongoURI, () => {
+const mongoURI = "mongodb://0.0.0.0:27017/test"
+// const mongoURI = "mongodb+srv://vidit:9120991477@cluster0.fhxgkns.mongodb.net/test"
+const connectToMongo = async() => {
+   try{
+      mongoose.connect(mongoURI,()=>{
+
         console.log("Connected to Mongo Successfully");
-    })
+    }) 
+    
+   }  catch(err){console.log(err)}
 }
+mongoose.set('strictQuery', false);
 module.exports = connectToMongo;
