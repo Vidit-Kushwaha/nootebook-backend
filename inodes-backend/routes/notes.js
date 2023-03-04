@@ -1,7 +1,8 @@
 const express=require('express');
 const router=express.Router();
 
-router.get('/api/notes',(req,res)=>{
+//
+router.get('/',(req,res)=>{
     obj={
         a:'thios',
         number:34
