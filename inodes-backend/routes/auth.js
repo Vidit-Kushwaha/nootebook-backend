@@ -15,16 +15,17 @@ router.post('/createUser', [
     body('password').isLength({ min: 5 })
 ],
     async (req, res) => {
+        let success=false;
         //error for data validation
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({success, errors: errors.array() });
         }
 
         try {
             //checking if user existing before
             let user = await User.findOne({ email: req.body.email })
-            if (user) { return res.status(400).json({ error: "User exist" }) }
+            if (user) { return res.status(400).json({success, error: "User exist" }) }
 
             //to create a secure password 
             const salt = await bcrypt.genSalt(10);
@@ -44,7 +45,8 @@ router.post('/createUser', [
                 }
             }
             const token = jwt.sign(data, JWT_secret);
-            res.json({ token })
+            success=true;
+            res.json({success, token })
         }
         catch (error) {
             console.error(error.message);
@@ -58,10 +60,11 @@ router.post('/login', [
     body('password').exists()
 ],
     async (req, res) => {
+        let success=false;
         //error for data validation
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({success, errors: errors.array() });
         }
         const { email, password } = req.body;
         try {
@@ -73,13 +76,14 @@ router.post('/login', [
             if(!passwordCompare){ return res.status(400).json("invalid credentials") }
 
             //json web token and sign token using JWT_secret
+            success=true;
             const data = {
                 user: {
                     id: user.id
                 }
             }
             const token = jwt.sign(data, JWT_secret);
-            res.json({ token })
+            res.json({success, token })
         } catch (error) {
             console.error(error.message);
             res.status(500).send("Internal server error")

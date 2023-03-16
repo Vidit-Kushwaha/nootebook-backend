@@ -7,9 +7,14 @@ const fetchuser=(req,res,next)=>{
     if(!token){
         res.send({error:"verify using valid token"})
     }
-    const data=jwt.verify(token,JWT_secret);
-    req.user=data.user;
-    next();
+    try{
+        const data=jwt.verify(token,JWT_secret);
+        req.user=data.user;
+        next();
+    }catch(error){
+        res.status(401).send("error")
+        console.log(error.message)
+    }
 }
 
 module.exports=fetchuser;
