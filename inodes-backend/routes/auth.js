@@ -5,6 +5,7 @@ var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const fetchuser = require('../middleware/fetchuser');
+require('dotenv').config();
 
 const JWT_secret = process.env.JWT_SECRET;
 
