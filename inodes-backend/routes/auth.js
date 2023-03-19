@@ -6,7 +6,7 @@ var jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const fetchuser = require('../middleware/fetchuser');
 
-const JWT_secret = "viditkushwaha%95.76"
+const JWT_secret = process.env.JWT_SECRET;
 
 //Router 1 to create user and verify user does not exist
 router.post('/createUser', [
